@@ -84,15 +84,15 @@ const int bufSize = 1024;
 uint8_t buff[1024] = {0};
 // Protected global variables
 #if defined(HAS_SCREEN)
-	TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
-	TFT_eSprite sprite = TFT_eSprite(&tft);
-	TFT_eSprite draw = TFT_eSprite(&tft);
-  volatile int tftWidth = TFT_HEIGHT;
-  #ifdef HAS_TOUCH 
-    volatile int tftHeight = TFT_WIDTH-20; // 20px to draw the TouchFooter(), were the btns are being read in touch devices.
-  #else
-    volatile int tftHeight = TFT_WIDTH;
-  #endif
+TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
+TFT_eSprite sprite = TFT_eSprite(&tft);
+TFT_eSprite draw = TFT_eSprite(&tft);
+volatile int tftWidth = TFT_HEIGHT;
+#ifdef HAS_TOUCH
+volatile int tftHeight = TFT_WIDTH - 20; // 20px to draw the TouchFooter(), were the btns are being read in touch devices.
+#else
+volatile int tftHeight = TFT_WIDTH;
+#endif
 #else
   SerialDisplayClass tft;
   SerialDisplayClass& sprite = tft;
