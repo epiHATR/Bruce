@@ -459,6 +459,73 @@ void runClockLoop() {
   }
 }
 
+#ifdef T_DISPLAY_S3
+/*********************************************************************
+**  Function: gsetNrf24CE
+**  get or set NRF24 CE pin
+**********************************************************************/
+int gsetNrf24CE(bool set)
+{
+  int result = bruceConfig.nrf24CE;
+  if(set) {
+    options.clear();
+    std::vector<std::pair<std::string, int>> pins;
+    pins = NRF24_CE_PINS;
+
+    int idx=100;
+    int j=0;
+    for (auto pin : pins) {
+      if(pin.second==bruceConfig.nrf24CE && idx==100) idx=j;
+      j++;
+      #ifdef ALLOW_ALL_GPIO_FOR_IR_RF
+      int i=pin.second;
+      if(i!=TFT_CS && i!=TFT_RST && i!=TFT_SCLK && i!=TFT_MOSI && i!=TFT_BL && i!=TOUCH_CS && i!=SDCARD_CS && i!=SDCARD_MOSI && i!=SDCARD_MISO)
+      #endif
+        options.push_back({pin.first, [=]() { bruceConfig.setNrf24CePin(pin.second); }, pin.second==bruceConfig.nrf24CE });
+    }
+
+    loopOptions(options, idx);
+
+    Serial.println("Saved pin: " + String(bruceConfig.nrf24CE));
+  }
+
+  returnToMenu=true;
+  return bruceConfig.nrf24CE;
+}
+
+/*********************************************************************
+**  Function: gsetNrf24CSN
+**  get or set NRF24 CSN pin
+**********************************************************************/
+int gsetNrf24CSN(bool set)
+{
+  int result = bruceConfig.nrf24CSN;
+  if(set) {
+    options.clear();
+    std::vector<std::pair<std::string, int>> pins;
+    pins = NRF24_CSN_PINS;
+
+    int idx=100;
+    int j=0;
+    for (auto pin : pins) {
+      if(pin.second==bruceConfig.nrf24CSN && idx==100) idx=j;
+      j++;
+      #ifdef ALLOW_ALL_GPIO_FOR_IR_RF
+      int i=pin.second;
+      if(i!=TFT_CS && i!=TFT_RST && i!=TFT_SCLK && i!=TFT_MOSI && i!=TFT_BL && i!=TOUCH_CS && i!=SDCARD_CS && i!=SDCARD_MOSI && i!=SDCARD_MISO)
+      #endif
+        options.push_back({pin.first, [=]() { bruceConfig.setNrf24CsnPin(pin.second); }, pin.second==bruceConfig.nrf24CSN });
+    }
+
+    loopOptions(options, idx);
+
+    Serial.println("Saved pin: " + String(bruceConfig.nrf24CSN));
+  }
+
+  returnToMenu=true;
+  return bruceConfig.nrf24CSN;
+}
+
 /*********************************************************************
 **  Function: gsetIrTxPin
 **  get or set IR Tx Pin
@@ -491,6 +558,9 @@ int gsetIrTxPin(bool set){
   returnToMenu=true;
   return bruceConfig.irTx;
 }
+
+
+#endif
 
 void setIrTxRepeats() {
   uint8_t chRpts = 0; // Chosen Repeats

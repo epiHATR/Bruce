@@ -10,9 +10,9 @@
 ************************************************************************************** */
 void nrf_jammer() {
   #if defined(NRF24_CE_PIN) && defined(NRF24_SS_PIN) && defined(USE_NRF24_VIA_SPI)
-    RF24 radio(NRF24_CE_PIN, NRF24_SS_PIN);                                                               ///ce-csn
-    byte hopping_channel[] = {32,34, 46,48, 50, 52, 0, 1, 2, 4, 6, 8, 22, 24, 26, 28, 30, 74, 76, 78, 80, 82, 84,86 };  // channel to hop
-    byte ptr_hop = 0;  // Pointer to the hopping array
+    RF24 radio(NRF24_CE_PIN, NRF24_SS_PIN);                                                                              // ce-csn
+    byte hopping_channel[] = {32, 34, 46, 48, 50, 52, 0, 1, 2, 4, 6, 8, 22, 24, 26, 28, 30, 74, 76, 78, 80, 82, 84, 86}; // channel to hop
+    byte ptr_hop = 0;                                                                                                    // Pointer to the hopping array
     if(nrf_start())
     {
         Serial.println("NRF24 turned On");

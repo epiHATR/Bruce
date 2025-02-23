@@ -31,6 +31,12 @@ void setClock();
 
 void runClockLoop();
 
+#if T_DISPLAY_S3
+int gsetNrf24CE(bool set = false);
+
+int gsetNrf24CSN(bool set = false);
+#endif
+
 int gsetIrTxPin(bool set = false);
 
 void setIrTxRepeats();

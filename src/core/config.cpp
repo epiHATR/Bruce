@@ -403,6 +403,16 @@ void BruceConfig::setRfRxPin(int value) {
     saveFile();
 }
 
+void BruceConfig::setNrf24CePin(int value) {
+    nrf24CE = value;
+    saveFile();
+}
+
+void BruceConfig::setNrf24CsnPin(int value) {
+    nrf24CSN = value;
+    saveFile();
+}
+
 
 void BruceConfig::setRfModule(RFModules value) {
     rfModule = value;

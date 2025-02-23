@@ -64,6 +64,8 @@ public:
     // BLE 
     String bleName = String("Keyboard_" + String((uint8_t)(ESP.getEfuseMac() >> 32), HEX));
 
+    int nrf24CE  = NRF24_CE_PIN;
+    int nrf24CSN = SPI_SS_PIN;
     // IR
     int irTx = LED;
     uint8_t irTxRepeats = 0;
@@ -162,6 +164,10 @@ public:
     void setRfFxdFreq(float value);
     void setRfScanRange(int value, int fxdFreq = 0);
     void validateRfScanRangeValue();
+
+    //NRF24
+    void setNrf24CePin(int value);
+    void setNrf24CsnPin(int value);
 
     // RFID
     void setRfidModule(RFIDModules value);

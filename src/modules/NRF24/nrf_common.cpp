@@ -26,7 +26,7 @@ bool nrf_start() {
   digitalWrite(NRF24_SS_PIN, HIGH);
   pinMode(NRF24_CE_PIN, OUTPUT);
   digitalWrite(NRF24_CE_PIN, LOW);
-  
+
   #if CC1101_MOSI_PIN==TFT_MOSI // (T_EMBED), CORE2 and others
     NRFSPI = &tft.getSPIinstance();
     NRFSPI->begin(NRF24_SCK_PIN,NRF24_MISO_PIN,NRF24_MOSI_PIN);    
@@ -36,18 +36,29 @@ bool nrf_start() {
   #elif defined(SMOOCHIEE_BOARD)
     NRFSPI = &CC_NRF_SPI;
     NRFSPI->begin(NRF24_SCK_PIN,NRF24_MISO_PIN,NRF24_MOSI_PIN);
+  #elif defined(T_DISPLAY_S3)
+    NRFSPI = &SPI;
+    NRFSPI->begin(NRF24_SCK_PIN,NRF24_MISO_PIN,NRF24_MOSI_PIN);
   #else 
     NRFSPI = &SPI;
     NRFSPI->begin(NRF24_SCK_PIN,NRF24_MISO_PIN,NRF24_MOSI_PIN);
   #endif
 
-  if(NRFradio.begin(NRFSPI,rf24_gpio_pin_t(NRF24_CE_PIN),rf24_gpio_pin_t(NRF24_SS_PIN)))
-  {
-    return true;
-  }
-  else
-  return false;
-
+  #if T_DISPLAY_S3
+    if(NRFradio.begin(NRFSPI,rf24_gpio_pin_t(bruceConfig.nrf24CE),rf24_gpio_pin_t(bruceConfig.nrf24CSN)))
+    {
+      return true;
+    }
+    else
+      return false;
+  #else
+    if(NRFradio.begin(NRFSPI,rf24_gpio_pin_t(NRF24_CE_PIN),rf24_gpio_pin_t(NRF24_SS_PIN)))
+    {
+      return true;
+    }
+    else
+      return false;
+  #endif
 
 
 #else // NRF24 not set in platfrmio.ini

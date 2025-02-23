@@ -1,5 +1,6 @@
 #include "NRF24.h"
 #include "core/display.h"
+#include "core/settings.h"
 #include "modules/NRF24/nrf_common.h"
 #include "modules/NRF24/nrf_jammer.h"
 #include "modules/NRF24/nrf_spectrum.h"
@@ -18,10 +19,26 @@ void NRF24Menu::optionsMenu() {
   #endif
     options.push_back({"Jammer 2.4G",  [=]() { nrf_jammer(); }});
 
+#ifdef T_DISPLAY_S3
+    options.push_back({"Config",    [=]() { configMenu(); }});
+#endif
     options.push_back({"Main Menu",    [=]() { backToMenu(); }});
 
     loopOptions(options,false,true,"Bluetooth");
 }
+#ifdef T_DISPLAY_S3
+void NRF24Menu::configMenu()
+{
+  options = {
+      {"CE Pin",     [=]() { gsetNrf24CE(true); }},
+      {"CSN/SS Pin", [=]() { gsetNrf24CSN(true);}},
+      {"Back",       [=]() { optionsMenu(); }},
+  };
+
+  loopOptions(options, false, true, "NRF24 Config");
+}
+
+#endif
 
 void NRF24Menu::drawIcon(float scale) {
     clearIconArea();
